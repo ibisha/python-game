@@ -10,7 +10,9 @@ def main():
     sysfont = pygame.font.SysFont(None, 72)
     message = sysfont.render("Hello Pygame", True, (0, 128, 128))
     message_rect = message.get_rect()
-    message_rect.center = (200, 100)
+
+    theta = 0
+    scale = 1
 
     while True:
         for event in pygame.event.get():
@@ -18,11 +20,17 @@ def main():
                 pygame.quit()
                 sys.exit()
 
-        SURFACE.fill((225, 225, 225))
-        SURFACE.blit(message, message_rect)
+        SURFACE.fill((255, 255, 255))
+        theta += 5
+        scale = (theta % 360) / 180
+
+        tmp_msg = pygame.transform.rotozoom(message, theta, scale)
+        tmp_rect = tmp_msg.get_rect()
+        tmp_rect.center = (200, 150)
+        SURFACE.blit(tmp_msg, tmp_rect)
 
         pygame.display.update()
-        FPSCLOCK.tick(3)
+        FPSCLOCK.tick(30)
 
 if __name__ == '__main__':
     main()
