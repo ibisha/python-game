@@ -20,7 +20,9 @@ def main():
 
         # rotate logo
         rotated_logo = pygame.transform.rotate(logo, theta)
-        SURFACE.blit(rotated_logo, (100, 30))
+        rect = rotated_logo.get_rect()
+        rect.center = (200, 150)
+        SURFACE.blit(rotated_logo, rect)
 
         pygame.display.update()
         FPSCLOCK.tick(30)
