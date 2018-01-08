@@ -1,28 +1,56 @@
 import sys
 from random import randint
 import pygame
-from pygame.locals import QUIT, Rect, KEYDOWN, K_SPACE
+from pygame.locals import QUIT, Rect, KEYDOWN, K_SPACE, K_r, KMOD_CTRL
 
 pygame.init()
 pygame.key.set_repeat(5, 5)
 SURFACE = pygame.display.set_mode((800, 600))
 FPSCLOCK = pygame.time.Clock()
 
-def main():
+walls = 80
+ship_y = 250
+score = 0
+velocity = 0
+slope = randint(1, 6)
+holes = []
+game_over = False
+restart = False
+
+def init():
+    global walls
+    global ship_y
+    global score
+    global velocity
+    global slope
+    global game_over
+    global restart
+    global holes
     walls = 80
     ship_y = 250
     score = 0
     velocity = 0
     slope = randint(1, 6)
-
-    sysfont = pygame.font.SysFont(None, 36)
-    ship_image = pygame.image.load("../images/games/cave/ship.png")
-    bang_image = pygame.image.load("../images/games/cave/bang.png")
-
     holes = []
     for xpos in range(walls):
         holes.append(Rect(xpos * 10, 100, 10, 400))
     game_over = False
+    restart = False
+
+
+def main():
+    global walls
+    global ship_y
+    global score
+    global velocity
+    global slope
+    global game_over
+    global restart
+    global holes
+    sysfont = pygame.font.SysFont(None, 36)
+    ship_image = pygame.image.load("../images/games/cave/ship.png")
+    bang_image = pygame.image.load("../images/games/cave/bang.png")
+
 
     while True:
         is_space_down = False
@@ -33,6 +61,8 @@ def main():
             elif event.type == KEYDOWN:
                 if event.key == K_SPACE:
                     is_space_down = True
+                elif event.key == K_r:
+                    restart = True
 
         # 自機を移動
         if not game_over:
@@ -66,9 +96,12 @@ def main():
 
         if game_over:
             SURFACE.blit(bang_image, (0, ship_y - 40))
+            if restart:
+                init()
 
         pygame.display.update()
         FPSCLOCK.tick(10)
 
 if __name__ == '__main__':
+    init()
     main()
